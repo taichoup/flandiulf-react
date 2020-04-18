@@ -1,45 +1,43 @@
 import React from "react";
-import { useEffect } from "react";
-import { _Store } from "./Store";
 import StoreContext from "./StoreContext";
-import axios from "axios";
+import { _Store } from "./Store";
 
-export const Results = (sign, category) => {
-  useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get("../static/astrodump.json");
-      const db = res.data;
-      _Store.dispatch({ type: "CRAWL_RESULTS", payload: db });
-    }
-    fetchData();
-  }, []);
-
-  //   const sendForm = () => {
-  //     let sign = document.getElementById("select_sign").nodeValue;
-  //     let category = document.getElementById("select_cat").nodeValue;
-  //   };
-
-  //   const resetTable = () => {
-  //     document.getElementById("results-table").remove();
-  //     document.getElementsByClassName("wordcloud")[0].remove();
-  //   };
+export const Results = (props) => {
+  const sgn = _Store.getState().sign;
+  const cat = _Store.getState().category;
+  const cwl = _Store.getState().crawl;
 
   return (
     <StoreContext.Consumer>
       {(store) => (
         <div id="table-wrapper">
-          <table>
-            {_Store.getState().crawl.map((r) =>
-              (
+          <table className="pure-table pure-table-horizontal">
+            {cwl
+              .filter((item) => item.sign === sgn && item.category === cat)
+              .map((r) => (
                 <tr>
-                  <td>r.source</td>
-                  <td>r.timestamp</td>
+                  <td>{r.source}</td>
+                  <td>{r.category}</td>
+                  <td>{r.sign}</td>
+                  <td>{r.timestamp}</td>
                   <td>r.content</td>
                 </tr>
-              ).filter((r) => r)
-            )}
-            {/* {_Store.getState().crawl} */}
+              ))}
           </table>
+
+          {/* <table className="pure-table pure-table-horizontal">
+            {props.crawl.filter(
+              (item) =>
+                item.sign === props.sign && item.category === props.category
+            )}
+            .map((r) => (
+            <tr>
+              <td>r.source</td>
+              <td>r.timestamp</td>
+              <td>r.content</td>
+            </tr>
+            ))
+          </table> */}
         </div>
       )}
     </StoreContext.Consumer>

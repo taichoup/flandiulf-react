@@ -19,3 +19,7 @@ h1 {
 #cloud-button {
   display: none;
 }
+
+select {
+  width: 15em;
+}
