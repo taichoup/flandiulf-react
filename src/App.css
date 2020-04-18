@@ -1,3 +1,7 @@
+body {
+  background-color: #f4f4f4;
+}
+
 form {
   display: flex;
   justify-content: center;
@@ -22,4 +26,8 @@ h1 {
 
 select {
   width: 15em;
+}
+
+table {
+  background-color: white;
 }

@@ -28,7 +28,7 @@ function App() {
       {(store) => (
         <div className="App">
           <header className="App-header">
-            <h1>Welcome to Flandiulf, une expérience méta-astrologique.</h1>
+            <h1>Bienvenue sur Flandiulf, une expérience méta-astrologique.</h1>
           </header>
           <form id="signsForm" className="pure-form pure-form-aligned">
             <div className="pure-control-group">
