@@ -1,26 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { _Store } from "./Store";
 import StoreContext from "./StoreContext";
 import { Results } from "./Results";
 import "./App.css";
 import data from "./data/astrodump.json";
 
-function handleSignChange(event) {
-  _Store.dispatch({ type: "SIGN", payload: event.target.value });
-}
-
-function handleCategoryChange(event) {
-  _Store.dispatch({ type: "CATEGORY", payload: event.target.value });
-}
-
-function handleTest(event) {
-  _Store.dispatch({ type: "TEST", payload: event.target.value });
-}
-
-// _Store.getState().crawl = data;
-_Store.dispatch({ type: "CRAWL_RESULTS", payload: data });
-
 function App() {
+  const [sign, setSign] = useState("balance");
+  const [category, setCategory] = useState("sante");
+  const [crawl, setCrawl] = useState(data);
+  const [showResults, setShowResults] = useState(false);
+
+  // function handleSignChange(event) {
+  //   setSign(event.target.value);
+  // }
+
+  // function handleCategoryChange(event) {
+  //   setCategory(event.target.value);
+  // }
+
+  function handleUserInputChange(event) {
+    setShowResults(false);
+  }
+
   return (
     <StoreContext.Consumer>
       {(store) => (
@@ -31,7 +33,7 @@ function App() {
           <form id="signsForm" className="pure-form pure-form-aligned">
             <div className="pure-control-group">
               <label for="select_sign">Signe astrologique :</label>
-              <select id="select_sign" onChange={handleSignChange}>
+              <select id="select_sign" onChange={handleUserInputChange}>
                 <option value="balance">Balance</option>
                 <option value="scorpion">Scorpion</option>
                 <option value="gemeaux">G&eacute;meaux</option>
@@ -49,7 +51,7 @@ function App() {
 
             <div className="pure-control-group">
               <label for="select_cat">Catégorie :</label>
-              <select id="select_cat" onChange={handleCategoryChange}>
+              <select id="select_cat" onChange={handleUserInputChange}>
                 <option value="sante">Sant&eacute;</option>
                 <option value="travail">Travail</option>
                 <option value="argent">Argent</option>
@@ -57,40 +59,31 @@ function App() {
               </select>
             </div>
 
-            <div className="pure-control-group">
-              <label for="test">Test input :</label>
-              <input type="text" id="test" onChange={handleTest} />
-            </div>
-
             <div className="pure-controls">
               <button
                 id="formButton"
                 type="button"
                 className="pure-button pure-button-primary"
-                onClick={() =>
-                  console.log(
-                    "Sign is %s and Cat is %s",
-                    _Store.getState().sign,
-                    _Store.getState().category
-                  )
-                }
+                onClick={() => {
+                  setSign(document.getElementById("select_sign").value);
+                  setCategory(document.getElementById("select_cat").value);
+                  setShowResults(true);
+                }}
               >
                 Envoyer
               </button>
             </div>
           </form>
 
-          <Results
-            crawl={_Store
-              .getState()
-              .crawl.filter(
-                (item) =>
-                  item.sign === _Store.getState().sign &&
-                  item.category === _Store.getState().category
+          {showResults ? (
+            <Results
+              crawl={crawl.filter(
+                (item) => item.sign === sign && item.category === category
               )}
-            sign={_Store.getState().sign}
-            category={_Store.getState().category}
-          />
+              sign={sign}
+              category={category}
+            />
+          ) : null}
 
           {/* <button id="cloud-button" onclick="go_cloud();" class="btn btn-info">
             Generate tag cloud
