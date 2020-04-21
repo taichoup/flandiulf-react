@@ -1,7 +1,7 @@
 ## Roadmap
 
 - finish porting the front-end from flandiulf
-- rewrite the scaping code using Puppeteer?
+- rewrite the scaping code using Puppeteer + Netlify functions?
 
 ## Available Scripts
 
